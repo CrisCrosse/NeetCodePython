@@ -20,3 +20,17 @@ class FirstTry:
         return root
     # This solution is O(n) time complexity as we traverse the tree once
     # this solution is O(n) space complexity due to recursion we create 2n objects in memory
+
+class Simplified:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return root
+        left = root.left
+        right = root.right
+        root.right = left
+        root.left = right
+        self.invertTree(right)
+        self.invertTree(left)
+        return root
+    # This is still O(n) for both complexities but we do not need the if left or right check
+    # if these values are None / null and the passed in node is a tip, the invertTree function when called with none will return none
