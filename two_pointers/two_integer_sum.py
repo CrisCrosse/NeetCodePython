@@ -42,5 +42,24 @@ class OptimisedTimeOn01SpaceSolution:
                 return [numbers_and_indices_dict[complementary_number] + 1, i + 1]
             numbers_and_indices_dict[number] = i
 
-            # this should satisfy the O(1) space complexity because we create a constant number of objects per input length
             # this should be O(n) time complexity because we only iterate through the list once
+#             it is O(n) space as the dict scales with input
+
+
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        l, r = 0, len(numbers) - 1
+
+        while l < r:
+            curSum = numbers[l] + numbers[r]
+
+            # This solution is using the list being sorted in non-decreasing order to step the pointers
+            if curSum > target:
+                r -= 1
+            elif curSum < target:
+                l += 1
+            else:
+                return [l + 1, r + 1]
+        return []
+
+    # this is O(n) time but O(1) space
