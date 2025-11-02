@@ -1,5 +1,6 @@
+from typing import List
 
-TODO: needs more study
+# TODO: needs more study
 class Solution:
     def minCostClimbingStairs(self, cost: List[int]) -> int:
 
