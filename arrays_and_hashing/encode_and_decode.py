@@ -32,3 +32,31 @@ class Solution:
 
         return result
 
+    # this solution is O(m * n) time complexity where m is number of words and n is the length of the words
+    # it is o(1) space complexity because we
+
+class OptimalSolution:
+
+    def encode(self, strs: List[str]) -> str:
+        res = ""
+        for s in strs:
+            res += str(len(s)) + "#" + s
+        return res
+
+    def decode(self, s: str) -> List[str]:
+        res = []
+        i = 0
+
+        while i < len(s):
+            j = i
+            while s[j] != '#':
+                j += 1
+            length = int(s[i:j])
+            i = j + 1
+            j = i + length
+            res.append(s[i:j])
+            i = j
+
+        return res
+# this is O(m) time complexity
+# this is O(m + n) space complexity
