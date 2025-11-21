@@ -59,8 +59,11 @@ class OptimalSolution:
             totalTime = 0
             for p in piles:
                 totalTime += math.ceil(float(p) / k)
+            #     if we finished eating before we had to
             if totalTime <= h:
+                # our new slowest rate is this rate
                 res = k
+                # search the left hand side of remaining rates
                 r = k - 1
             else:
                 l = k + 1
