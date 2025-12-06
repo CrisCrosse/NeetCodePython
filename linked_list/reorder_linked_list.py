@@ -155,6 +155,7 @@ class TheirVersionOfMergingTheTwoEndsOfTheLinkedList:
 
 #         This is slightly nicer than my approach due to not using maths
 
+# TODO: can come back and look at the recursion solution as a thought experiment but it was not optimal for this problem
 
 
 
