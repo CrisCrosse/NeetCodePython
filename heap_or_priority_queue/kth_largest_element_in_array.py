@@ -79,3 +79,6 @@ class QuickSelect:
                 return nums[pivot_index]
 
         return quickSelect(0, len(nums) - 1)
+
+# O(n) average time complexity, O(n^2) worst case
+# Space complexity O(n)
