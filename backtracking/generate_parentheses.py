@@ -67,9 +67,12 @@ class DynamicProgramming:
 
         for k in range(n + 1):
             for i in range(k):
+                # we loop over previous amounts of brackets and combine them
                 for left in res[i]:
                     for right in res[k-i-1]:
+                        print(f"k: {k}, i: {i},\n res[i]: {res[i]} left: {left} \n res[k-i-1]: {res[k-i-1]}, right: {right}")
                         res[k].append("(" + left + ")" + right)
+                        print(f"result: {res}")
 
         return res[-1]
 
