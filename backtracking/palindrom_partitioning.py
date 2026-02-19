@@ -1,4 +1,7 @@
+from operator import index
 from typing import List
+
+from pandas.core.indexes.base import ensure_index
 
 
 class InitialAttempt:
@@ -117,4 +120,113 @@ class BacktrackingSolution:
                 return False
             l, r = l + 1, r - 1
         return True
+
+# Time complexity: O(n * 2^n ) because we iterate throught the list --> n, and at each point we depth first search the rest of the solution with 2 branches
+# Space complexity: O(n) extra space. O(n * 2^n) space for the output list.
+
+class BacktrackingSolution2:
+    def partition(self, s: str) -> List[List[str]]:
+        res, part = [], []
+
+        def dfs(i):
+            # same exit condition as previous backtracking but we do not check if i == j
+            if i >= len(s):
+                res.append(part.copy())
+                return
+
+            # for each remaining substring endpoint, if it is a palindrom add it to the part and try to complete the sequence
+            for j in range(i, len(s)):
+                if self.isPali(s, i, j):
+                    part.append(s[i: j + 1])
+                    dfs(j + 1)
+                    # remove that part so we can try larger substrings from i
+                    part.pop()
+
+        dfs(0)
+        return res
+
+    def isPali(self, s, l, r):
+        while l < r:
+            if s[l] != s[r]:
+                return False
+            l, r = l + 1, r - 1
+        return True
+
+# same time and space complexity
+
+class BacktrackingWithDynamicProgramming:
+    def partition(self, s: str) -> List[List[str]]:
+        n = len(s)
+        # create 2D array [i=1[j=1False, j=2False, j=3False, j=4False], i=2[j=1False, j=2False, j=3False, j=4False]]
+        # which stores if s[i:j] is a palindrome
+        dp = [[False] * n for _ in range(n)]
+
+
+        for length in range(1, n + 1):
+            for starting_index in range(n - length + 1):
+                end_index = starting_index + length - 1
+                print(f"length: {length}, starting_index: {starting_index}, end_index {end_index}")
+                print(f"substring: {s[starting_index:end_index]}")
+
+                dp[starting_index][end_index] = self.isPali(s, starting_index, end_index)
+                print(f"dp: {dp}")
+
+        res, part = [], []
+
+        def dfs(i):
+            # same exit condition as backtracking 2
+            if i >= len(s):
+                res.append(part.copy())
+                return
+
+            # for each subsequent index, if substring i->j is palindrom, recurse to find all solutions with that substring in this position
+            for j in range(i, len(s)):
+                if dp[i][j]:
+                    part.append(s[i: j + 1])
+                    dfs(j + 1)
+                    part.pop()
+
+        dfs(0)
+        return res
+
+    def isPali(self, s, l, r):
+        while l < r:
+            if s[l] != s[r]:
+                return False
+            l, r = l + 1, r - 1
+        return True
+
+# this has the same tine and space complexity so doesn't seem to be worth the extra effort of creating the ahead of time palindrome lookup table
+
+
+class Recursive:
+    def partition(self, s: str) -> List[List[str]]:
+        # dynamic program an is palindrome 2d array
+        n = len(s)
+        dp = [[False] * n for _ in range(n)]
+        for l in range(1, n + 1):
+            for i in range(n - l + 1):
+                dp[i][i + l - 1] = (s[i] == s[i + l - 1] and
+                                    (i + 1 > (i + l - 2) or
+                                     dp[i + 1][i + l - 2]))
+
+        # dfs with no global result var
+        def dfs(i):
+            # base case returns an empty list of lists
+            if i >= n:
+                return [[]]
+
+            ret = []
+            for j in range(i, n):
+                if dp[i][j]:
+                    # for all possible combinations of palindromes after j
+                    # add the current found palindromic substring to it
+                    nxt = dfs(j + 1)
+                    for part in nxt:
+                        cur = [s[i: j + 1]] + part
+                        ret.append(cur)
+            # return all possible palindromic subtrings from this index
+            return ret
+
+        return dfs(0)
 
