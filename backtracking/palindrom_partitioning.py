@@ -1,3 +1,6 @@
+from typing import List
+
+
 class InitialAttempt:
     # 6/ 21 test cases working
     def partition(self, s: str) -> List[List[str]]:
@@ -82,5 +85,36 @@ class InitialAttempt:
         return [[""]]
 
 
+class BacktrackingSolution:
+    def partition(self, s: str) -> List[List[str]]:
+        res, part = [], []
 
+        def dfs(j, i):
+            if i >= len(s):
+                # if we have recursed to the end of the substring and used all letters, add this combination of palindromes to the result
+                if i == j:
+                    res.append(part.copy())
+                return
+
+            # if current substring is palindrome
+            if self.isPali(s, j, i):
+                # append current substring
+                part.append(s[j : i + 1])
+                # depth first search after end of substring with the current substring
+                dfs(i + 1, i + 1)
+                # remove that palindrome and keep searching
+                part.pop()
+
+            # search larger substring
+            dfs(j, i + 1)
+
+        dfs(0, 0)
+        return res
+
+    def isPali(self, s, l, r):
+        while l < r:
+            if s[l] != s[r]:
+                return False
+            l, r = l + 1, r - 1
+        return True
 
