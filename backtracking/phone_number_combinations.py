@@ -14,28 +14,20 @@ class InitialAttempt:
             9: ["w", "x", "y", "z"]}
 
         result = []
-        print(digit_to_chars)
-        print(digit_to_chars[3])
-
         def recurse(index, curr):
+            if not digits:
+                return
             if index == len(digits):
-                result.append(curr.copy())
+                result.append(curr)
                 return
 
             digit = int(digits[index])
             chars = digit_to_chars[digit]
             for char in chars:
-                curr.append(char)
+                curr += char
                 recurse(index + 1, curr)
-                curr.pop()
+                curr = curr[:-1]
 
-        recurse(0, [])
+        recurse(0, "")
 
         return result
-
-
-
-
-
-
-
