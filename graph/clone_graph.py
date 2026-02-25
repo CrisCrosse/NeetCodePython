@@ -1,3 +1,4 @@
+from collections import deque
 from typing import Optional
 
 
@@ -34,4 +35,38 @@ class DFS:
 
 class BreadthFirstSearch:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        return None
+        if not node:
+            return None
+
+        oldToNew = {}
+        q = deque()
+        q.append(node)
+
+        while q:
+            old_node = q.popleft()
+            print(f"looking at node: {old_node.val}")
+            if old_node not in oldToNew:
+                new_node = Node(old_node.val)
+                print(f"creating new node {new_node.val}")
+                oldToNew[old_node] = new_node
+            else:
+                new_node = oldToNew[old_node]
+
+            new_neighbors = []
+
+            for neighbor in old_node.neighbors:
+                print(f"adding neighbor {neighbor.val} to {new_node.val}")
+                if neighbor not in oldToNew:
+                    new_neighbor = Node(neighbor.val)
+                    oldToNew[neighbor] = new_neighbor
+                    q.append(neighbor)
+                else:
+                    new_neighbor = oldToNew[neighbor]
+                new_neighbors.append(new_neighbor)
+            new_node.neighbors = new_neighbors
+
+        return oldToNew[node]
+
+
+# Time complexity: O(V+E)
+# Space complexity: O(V). Where V is the number of vertices and E is the number of edges.
