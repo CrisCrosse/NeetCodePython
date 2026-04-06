@@ -164,3 +164,7 @@ class TopologicalSortKahnsAlgo:
             if indegree[u] == 2 and indegree[v]:
                 return [u, v]
         return []
+
+# Time complexity: O(V+(E∗α(V)))
+# Space complexity: O(V)
+# Where V is the number of vertices and E is the number of edges in the graph. α() is used for amortized complexity.
